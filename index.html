@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#060916">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="QuestForge">
+  <title>QuestForge Fitness</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/questforge-icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="launch-splash" id="launchSplash" aria-label="QuestForge Fitness launch">
+    <img src="assets/questforge-poster.png" alt="QuestForge Fitness. Turn every workout into an epic quest. Strength, endurance, and mobility. Begin your quest.">
+    <button class="launch-quest-button" id="launchQuestButton" type="button" aria-label="Begin your quest">
+      <span>Begin Your Quest</span>
+    </button>
+  </section>
+
+  <section class="onboarding active" id="onboarding" aria-label="QuestForge setup">
+    <div class="onboarding-card">
+      <div class="onboarding-progress" id="onboardingProgress"></div>
+      <div id="onboardingContent"></div>
+      <div class="onboarding-actions">
+        <button class="text-button secondary-button" id="onboardingBack">Back</button>
+        <button class="primary-button" id="onboardingNext">Begin</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="app-shell">
+    <section class="topbar" aria-label="Profile summary">
+      <div>
+        <p class="eyebrow">QuestForge Fitness Alpha</p>
+        <h1>Today's Quest</h1>
+        <p class="active-user-label" id="activeUserName">Adventurer</p>
+      </div>
+      <button class="icon-button" id="settingsButton" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </section>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="quest-label">Current class</p>
+        <h2 id="goalTitle">Build a 4-week whole-body base</h2>
+        <p id="goalSubtitle">Strength, cardio, yoga, nutrition, and recovery in one loop.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="track"></div>
+        <div class="avatar">
+          <div class="head"></div>
+          <div class="torso"></div>
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+          <div class="leg left"></div>
+          <div class="leg right"></div>
+        </div>
+        <div class="dumbbell"></div>
+      </div>
+    </section>
+
+    <section class="class-panel" aria-label="Class training mix">
+      <div class="section-heading">
+        <h3 id="classRole">Balanced Adventurer</h3>
+        <span class="pill" id="classFocus">Balanced build</span>
+      </div>
+      <div class="mix-grid" id="classMix"></div>
+    </section>
+
+    <section class="score-strip" aria-label="Progress scorecards">
+      <article>
+        <span id="levelValue">Level 3</span>
+        <small>Consistency</small>
+      </article>
+      <article>
+        <span id="streakValue">5 days</span>
+        <small>Streak</small>
+      </article>
+      <article>
+        <span id="xpValue">1,240 XP</span>
+        <small>Season XP</small>
+      </article>
+    </section>
+
+    <section class="tabs" aria-label="App sections">
+      <button class="tab active" data-tab="today">Today</button>
+      <button class="tab" data-tab="plan">Plan</button>
+      <button class="tab" data-tab="fuel">Fuel</button>
+      <button class="tab" data-tab="wins">Wins</button>
+    </section>
+
+    <section class="panel active" id="today" aria-labelledby="todayTab">
+      <div class="section-heading">
+        <h3>Guided Session</h3>
+        <div class="session-actions">
+          <button class="reroll-button" id="rerollQuest" type="button" aria-label="Reroll today's quest">
+            <img src="assets/reroll-die.png" alt="">
+            <span id="rerollCount">2</span>
+          </button>
+          <button class="text-button" id="completeWorkout">Complete quest</button>
+        </div>
+      </div>
+      <section class="hero-status-card" aria-label="Hero status check">
+        <div>
+          <p class="eyebrow">Daily task</p>
+          <h4>Hero Status Check</h4>
+          <p id="statusNudge">Tune today's quest before you train.</p>
+        </div>
+        <div class="status-options" id="heroStatusOptions"></div>
+      </section>
+      <div id="exerciseList" class="exercise-list"></div>
+    </section>
+
+    <section class="panel" id="plan">
+      <div class="section-heading">
+        <h3>Weekly Quest Map</h3>
+        <span class="pill" id="weeklyScore">3 of 7 complete</span>
+      </div>
+      <div class="milestone-track" id="milestoneTrack"></div>
+      <div class="week-grid" id="weekGrid"></div>
+    </section>
+
+    <section class="panel" id="fuel">
+      <div class="section-heading">
+        <h3>Fuel Targets</h3>
+        <span class="pill" id="calorieTarget">2,250 kcal</span>
+      </div>
+      <div class="macro-grid">
+        <article>
+          <strong id="proteinValue">155g</strong>
+          <span>Protein</span>
+        </article>
+        <article>
+          <strong id="fiberValue">32g</strong>
+          <span>Fiber</span>
+        </article>
+        <article>
+          <strong id="waterValue">3.0L</strong>
+          <span>Water</span>
+        </article>
+      </div>
+      <div class="fuel-card">
+        <h4>Today's nudge</h4>
+        <p id="fuelNudge">Have a protein-forward meal within two hours of strength work, then keep dinner colorful and boringly reliable.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="wins">
+      <div class="section-heading">
+        <h3>Achievements</h3>
+        <span class="pill">12 unlocked</span>
+      </div>
+      <div class="achievement-grid" id="achievementGrid"></div>
+    </section>
+  </main>
+
+  <dialog id="menuDialog" class="menu-dialog">
+    <form method="dialog">
+      <div class="section-heading">
+        <h3>Menu</h3>
+        <button class="icon-close" aria-label="Close">x</button>
+      </div>
+      <div class="menu-options">
+        <button type="button" data-menu-action="user-info">User Info</button>
+        <button type="button" data-menu-action="users">Switch User</button>
+        <button type="button" data-menu-action="character-creation">Character Creation</button>
+        <button type="button" data-menu-action="relics">Relics and Amulets</button>
+        <button type="button" data-menu-action="exercises">All Exercises</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="libraryDialog" class="screen-dialog">
+    <div class="section-heading">
+      <h3>Exercise Library</h3>
+      <button class="icon-close" aria-label="Close">x</button>
+    </div>
+    <span class="pill" id="libraryCount">0 known</span>
+    <div id="exerciseLibrary" class="exercise-library"></div>
+  </dialog>
+
+  <dialog id="relicsDialog" class="screen-dialog">
+    <div class="section-heading">
+      <h3>Relics and Amulets</h3>
+      <button class="icon-close" aria-label="Close">x</button>
+    </div>
+    <div id="relicSettings" class="relic-grid"></div>
+  </dialog>
+
+  <dialog id="userDialog" class="screen-dialog">
+    <div class="section-heading">
+      <h3>Users</h3>
+      <button class="icon-close" aria-label="Close">x</button>
+    </div>
+    <div id="userList" class="user-list"></div>
+    <form class="new-user-form" id="newUserForm">
+      <label>New user <input id="newUserName" type="text" maxlength="32" placeholder="Adventurer name"></label>
+      <button class="primary-button" type="submit">Create user</button>
+    </form>
+  </dialog>
+
+  <dialog id="rolloverDialog" class="screen-dialog">
+    <div class="section-heading">
+      <h3>Previous Quest</h3>
+    </div>
+    <div class="rollover-summary" id="rolloverSummary"></div>
+    <div class="rollover-actions">
+      <button class="primary-button" id="confirmPreviousComplete" type="button">Mark complete</button>
+      <button class="text-button secondary-button" id="confirmPreviousIncomplete" type="button">Leave incomplete</button>
+    </div>
+  </dialog>
+
+  <dialog id="profileDialog">
+    <form method="dialog" class="profile-form">
+      <div class="section-heading">
+        <h3>Biometrics & Devices</h3>
+        <button class="icon-close" aria-label="Close">x</button>
+      </div>
+      <label>Name <input id="nameInput" type="text" maxlength="32"></label>
+      <label>Age <input id="ageInput" type="number" min="13" max="100"></label>
+      <div class="height-field">
+        <span>Height</span>
+        <label><input id="heightFeetInput" type="number" min="4" max="7"><span>ft</span></label>
+        <label><input id="heightInchesInput" type="number" min="0" max="11"><span>in</span></label>
+      </div>
+      <label>Weight <input id="weightInput" type="number" min="80" max="500"><span>lb</span></label>
+      <label>Class
+        <select id="goalInput">
+          <option value="barbarian">Barbarian - Bodybuilding</option>
+          <option value="monk">Monk - Yoga and mobility</option>
+          <option value="ranger">Ranger - Aerobic endurance</option>
+          <option value="paladin">Paladin - Balanced strength</option>
+          <option value="rogue">Rogue - Conditioning</option>
+          <option value="druid">Druid - Recovery and longevity</option>
+        </select>
+      </label>
+      <div class="device-list">
+        <button type="button" class="device connected">Apple Health ready</button>
+        <button type="button" class="device connected">Withings watch</button>
+        <button type="button" class="device connected">Withings scale</button>
+      </div>
+      <button type="button" class="text-button secondary-button" id="rerunSetup">Rerun character creation</button>
+      <button class="primary-button" id="saveProfile">Save profile</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

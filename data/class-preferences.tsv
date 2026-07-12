@@ -1,0 +1,7 @@
+class_key	preferred_tags	avoided_tags	intensity_bias
+barbarian	heavy,power,hypertrophy,upper_body,push,pull,arms,shoulders,posterior_chain	restorative	high
+monk	mobility,balance,breath,control	heavy	low
+ranger	endurance,outdoor,running,walking	heavy	medium
+paladin	full_body,posture,flow,endurance	none	medium
+rogue	conditioning,intervals,fat_loss,core	restorative	high
+druid	recovery,longevity,restorative,outdoor	heavy	low

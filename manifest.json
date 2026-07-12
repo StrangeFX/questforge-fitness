@@ -1,0 +1,38 @@
+{
+  "name": "QuestForge Fitness",
+  "short_name": "QuestForge",
+  "description": "RPG-inspired workout planner and tracker. Turn strength, cardio, yoga, and recovery into a class-based fantasy campaign.",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#060916",
+  "theme_color": "#060916",
+  "icons": [
+    {
+      "src": "assets/questforge-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/questforge-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/questforge-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/questforge-app-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

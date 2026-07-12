@@ -1,0 +1,7 @@
+class_key	strength	cardio	yoga	recovery
+barbarian	50	20	15	15
+monk	20	15	50	15
+ranger	20	50	15	15
+paladin	35	25	25	15
+rogue	30	35	15	20
+druid	20	25	35	20
