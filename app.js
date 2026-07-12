@@ -2090,6 +2090,14 @@ document.getElementById("launchQuestButton").addEventListener("click", () => {
   renderOnboarding();
 });
 
+// The splash has exactly one action, so any tap on it begins the quest.
+// This also protects against the tap target and painted banner drifting
+// apart on viewports we have not tested.
+document.getElementById("launchSplash").addEventListener("click", () => {
+  launchSplashDismissed = true;
+  renderOnboarding();
+});
+
 document.getElementById("onboardingBack").addEventListener("click", () => {
   onboardingStep = Math.max(0, onboardingStep - 1);
   renderOnboarding();

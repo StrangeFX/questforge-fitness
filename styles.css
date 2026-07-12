@@ -49,23 +49,34 @@ button { cursor: pointer; }
   display: grid;
 }
 
-.launch-splash img {
+/* The poster wrapper shrink-wraps the image exactly, so the invisible
+   button can be placed as a percentage of the artwork itself. Anchoring
+   to the viewport instead broke on iPhone standalone mode: the taller
+   viewport re-centered the poster and the tap target drifted off the
+   painted "Begin Your Quest" banner. */
+.launch-poster {
+  position: relative;
+}
+
+.launch-poster img {
   display: block;
-  width: min(100%, 520px);
+  width: auto;
+  height: auto;
+  max-width: min(calc(100vw - 20px), 520px);
   max-height: calc(100vh - 20px);
-  object-fit: contain;
   border: 1px solid rgba(247,200,95,.72);
   border-radius: 8px;
   box-shadow: 0 24px 80px rgba(0,0,0,.68), 0 0 34px rgba(49,186,255,.18);
 }
 
+/* Painted banner occupies ~83-90% of the poster's height; the tap target
+   is slightly larger than the art for forgiving thumbs. */
 .launch-quest-button {
   position: absolute;
-  left: 50%;
-  bottom: clamp(58px, 8.2vh, 132px);
-  width: min(78vw, 420px);
-  height: clamp(58px, 8vh, 92px);
-  transform: translateX(-50%);
+  top: 81.5%;
+  left: 7%;
+  width: 86%;
+  height: 10%;
   border: 0;
   border-radius: 8px;
   background: transparent;
