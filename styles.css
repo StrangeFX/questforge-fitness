@@ -38,7 +38,7 @@ button { cursor: pointer; }
   z-index: 30;
   display: none;
   place-items: center;
-  overflow: auto;
+  overflow: hidden;
   padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
   background:
     radial-gradient(circle at 50% 0%, rgba(49,186,255,.2), transparent 34%),
