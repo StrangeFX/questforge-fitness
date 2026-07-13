@@ -443,6 +443,56 @@ button { cursor: pointer; }
   align-items: center;
 }
 
+.page-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 16px 0 18px;
+  padding: 5px;
+  border: 1px solid rgba(247,200,95,.54);
+  border-radius: 8px;
+  background: rgba(7,8,25,.72);
+}
+.page-link {
+  display: grid;
+  place-items: center;
+  min-height: 38px;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  background: transparent;
+  text-decoration: none;
+  font-size: 13px;
+}
+.page-link.active, .page-link:hover, .page-link:focus-visible {
+  color: #071025;
+  background: linear-gradient(180deg, var(--gold-2), var(--gold));
+  font-weight: 800;
+  box-shadow: 0 0 16px rgba(247,200,95,.35);
+}
+.app-page { display: none; }
+.app-page.active { display: block; }
+#workoutPage > .hero,
+#workoutPage > .quick-actions,
+#workoutPage > .class-panel,
+#workoutPage > .score-strip { display: none; }
+.home-welcome {
+  margin: 0 0 12px;
+  padding: 20px;
+  border: 1px solid rgba(247,200,95,.62);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(20,86,207,.42), rgba(33,22,75,.88));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 12px 30px rgba(0,0,0,.25);
+}
+.home-welcome h2 { margin-bottom: 8px; }
+.home-welcome p:last-child { margin-bottom: 0; color: var(--muted); line-height: 1.4; }
+.home-class-flag {
+  margin: 0 0 12px;
+  color: var(--gold-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .topbar, .section-heading, .hero { justify-content: space-between; gap: 16px; }
 .eyebrow, .quest-label, small, .exercise-meta, .fuel-card p { color: var(--muted); }
 .eyebrow, .quest-label { margin: 0 0 3px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
@@ -539,6 +589,7 @@ h4 { margin-bottom: 8px; }
   color: var(--ink);
   background: linear-gradient(90deg, rgba(20,86,207,.48), rgba(33,22,75,.82));
   text-align: left;
+  text-decoration: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 9px 24px rgba(0,0,0,.22);
 }
 
@@ -558,25 +609,6 @@ h4 { margin-bottom: 8px; }
 .quick-action strong { color: var(--gold-2); }
 .quick-action small { margin-top: 3px; color: var(--muted); font-size: 12px; }
 .quick-action-arrow { color: var(--gold-2); font-size: 22px; }
-
-.dialog-intro { color: var(--muted); line-height: 1.4; }
-.trail-progress-card {
-  margin: 12px 0;
-  padding: 12px;
-  border: 1px solid rgba(84,229,157,.38);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(33,22,75,.84), rgba(8,13,42,.9));
-}
-.trail-progress-heading { display: flex; justify-content: space-between; gap: 10px; color: var(--gold-2); }
-.trail-progress-heading span, .trail-progress-card p { color: var(--muted); font-size: 12px; }
-.trail-progress-bar { height: 12px; margin: 12px 0 8px; overflow: hidden; border: 1px solid rgba(247,200,95,.28); border-radius: 999px; background: rgba(255,255,255,.1); }
-.trail-progress-bar i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--mint), var(--sky), var(--gold)); transition: width .25s ease; }
-.trail-progress-card p { margin: 0; }
-.walking-input-grid { display: grid; gap: 9px; margin: 12px 0; }
-.walking-input-grid label { display: grid; grid-template-columns: 1fr 145px; gap: 8px; align-items: center; color: var(--muted); }
-.walking-input-grid label span { display: flex; align-items: center; gap: 5px; }
-.walking-input-grid input { width: 100%; min-width: 0; }
-.tracker-device-note { color: var(--muted); font-size: 12px; line-height: 1.35; }
 
 .score-strip { gap: 8px; margin-bottom: 14px; }
 .score-strip article, .macro-grid article, .fuel-card, .exercise-card, .achievement, .day-card, .class-panel {

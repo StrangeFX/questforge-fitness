@@ -47,7 +47,7 @@
     <section class="topbar" aria-label="Profile summary">
       <div>
         <p class="eyebrow">QuestForge Fitness Alpha</p>
-        <h1>Today's Quest</h1>
+        <h1>QuestForge</h1>
         <p class="active-user-label" id="activeUserName">Adventurer</p>
       </div>
       <button class="icon-button" id="settingsButton" aria-label="Open menu">
@@ -55,6 +55,39 @@
       </button>
     </section>
 
+    <nav class="page-nav" aria-label="Main pages">
+      <button class="page-link active" type="button" data-page="homePage">Home</button>
+      <button class="page-link" type="button" data-page="workoutPage">Workout</button>
+      <a class="page-link" href="docs/design/adventure-map.html">Walking Tracker</a>
+    </nav>
+
+    <section class="app-page active" id="homePage" aria-labelledby="homeGreeting">
+      <section class="home-welcome">
+        <p class="eyebrow">Your next chapter</p>
+        <h2 id="homeGreeting">Welcome, Adventurer.</h2>
+        <p id="homeGreetingSupport">Your first quest is ready whenever you are.</p>
+      </section>
+      <p class="home-class-flag" id="homeClassFlag">Current class: Balanced Adventurer</p>
+      <section class="score-strip" aria-label="Progress scorecards">
+        <article><span id="homeLevelValue">Level 1</span><small>Level</small></article>
+        <article><span id="homeStreakValue">0 days</span><small>Streak</small></article>
+        <article><span id="homeXpValue">0 XP</span><small>XP</small></article>
+      </section>
+      <section class="quick-actions" aria-label="Start a quest">
+        <button class="quick-action" type="button" data-open-workout>
+          <span class="quick-action-icon">W</span>
+          <span><strong>Today's workout</strong><small>Open guided session</small></span>
+          <span class="quick-action-arrow">→</span>
+        </button>
+        <a class="quick-action" href="docs/design/adventure-map.html">
+          <span class="quick-action-icon">T</span>
+          <span><strong>Walking tracker</strong><small>Advance your trail by goal</small></span>
+          <span class="quick-action-arrow">→</span>
+        </a>
+      </section>
+    </section>
+
+    <section class="app-page" id="workoutPage" aria-label="Workout">
     <section class="hero">
       <div class="hero-copy">
         <p class="quest-label">Current class</p>
@@ -182,6 +215,7 @@
       </div>
       <div class="achievement-grid" id="achievementGrid"></div>
     </section>
+    </section>
   </main>
 
   <dialog id="menuDialog" class="menu-dialog">
@@ -238,29 +272,6 @@
       <button class="primary-button" id="confirmPreviousComplete" type="button">Mark complete</button>
       <button class="text-button secondary-button" id="confirmPreviousIncomplete" type="button">Leave incomplete</button>
     </div>
-  </dialog>
-
-  <dialog id="walkingDialog" class="screen-dialog walking-dialog">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">Travel by intention</p>
-        <h3>Walking Tracker</h3>
-      </div>
-      <button class="icon-close" aria-label="Close">x</button>
-    </div>
-    <p class="dialog-intro">Your trail advances from the portion of today's walking goal you complete, so different step counts can still earn the same progress.</p>
-    <div class="trail-progress-card">
-      <div class="trail-progress-heading"><strong id="walkingProgressLabel">0% of today's trail</strong><span id="walkingGoalLabel">30 min goal</span></div>
-      <div class="trail-progress-bar"><i id="walkingProgressBar"></i></div>
-      <p id="walkingProgressNote">Log a walk to move toward the next waypoint.</p>
-    </div>
-    <div class="walking-input-grid">
-      <label>Today's goal <span><input id="walkingGoalInput" type="number" min="5" max="300" step="5"> min</span></label>
-      <label>Minutes walked <span><input id="walkingMinutesInput" type="number" min="0" max="600" step="1"> min</span></label>
-      <label>Optional steps <span><input id="walkingStepsInput" type="number" min="0" max="100000" step="100" placeholder="From a device"></span></label>
-    </div>
-    <p class="tracker-device-note">Apple Health and Withings data can feed this tracker once device permissions are connected.</p>
-    <button class="primary-button" id="saveWalkingLog" type="button">Log today's walk</button>
   </dialog>
 
   <dialog id="profileDialog">

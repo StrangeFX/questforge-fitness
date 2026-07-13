@@ -1367,14 +1367,27 @@ function render() {
   const exercises = exercisesForToday().filter(exercise => !completed.has(exercise.id));
   const nutrition = estimateNutrition(profile);
 
+  const userName = activeUser?.name || profile.name || "Adventurer";
+  const isReturning = questState.xp > 0 || questState.streak > 0 || questState.completedToday;
+  document.getElementById("activeUserName").textContent = userName;
+  document.getElementById("homeGreeting").textContent = `${isReturning ? "Welcome back" : "Welcome"}, ${userName}.`;
+  document.getElementById("homeGreetingSupport").textContent = isReturning
+    ? "Your campaign is ready for today's next step."
+    : "Your first quest is ready whenever you are.";
+  document.getElementById("homeClassFlag").textContent = `Current class: ${plan.title}`;
   document.getElementById("goalTitle").textContent = `${plan.title} Path`;
   document.getElementById("goalSubtitle").textContent = plan.subtitle;
-  document.getElementById("activeUserName").textContent = activeUser?.name || profile.name || "Adventurer";
   document.getElementById("classRole").textContent = `${plan.title} Training Mix`;
   document.getElementById("classFocus").textContent = plan.focus;
-  document.getElementById("xpValue").textContent = `${questState.xp.toLocaleString()} XP`;
-  document.getElementById("streakValue").textContent = `${questState.streak} days`;
-  document.getElementById("levelValue").textContent = `Level ${Math.floor(questState.xp / 500) + 1}`;
+  const levelValue = `Level ${Math.floor(questState.xp / 500) + 1}`;
+  const streakValue = `${questState.streak} days`;
+  const xpValue = `${questState.xp.toLocaleString()} XP`;
+  document.getElementById("homeXpValue").textContent = xpValue;
+  document.getElementById("homeStreakValue").textContent = streakValue;
+  document.getElementById("homeLevelValue").textContent = levelValue;
+  document.getElementById("xpValue").textContent = xpValue;
+  document.getElementById("streakValue").textContent = streakValue;
+  document.getElementById("levelValue").textContent = levelValue;
   document.getElementById("calorieTarget").textContent = `${nutrition.calories.toLocaleString()} kcal`;
   document.getElementById("proteinValue").textContent = `${nutrition.protein}g`;
   document.getElementById("fiberValue").textContent = `${nutrition.fiber}g`;
@@ -1432,54 +1445,7 @@ function render() {
 
   renderHeroStatusCheck();
   renderExerciseLibrary();
-  renderWalkingTracker();
   if (previousSession) openRolloverDialog(previousSession);
-}
-
-function walkingRecord() {
-  questState.walkingTracker ||= {};
-  return questState.walkingTracker[todayKey()] || { goalMinutes: 30, minutes: 0, steps: 0 };
-}
-
-function renderWalkingTracker() {
-  const record = walkingRecord();
-  const goal = Math.max(5, Number(record.goalMinutes) || 30);
-  const minutes = Math.max(0, Number(record.minutes) || 0);
-  const percent = Math.min(100, Math.round(minutes / goal * 100));
-  const progressLabel = document.getElementById("walkingProgressLabel");
-  const goalLabel = document.getElementById("walkingGoalLabel");
-  const progressBar = document.getElementById("walkingProgressBar");
-  const progressNote = document.getElementById("walkingProgressNote");
-  if (!progressLabel || !goalLabel || !progressBar || !progressNote) return;
-
-  progressLabel.textContent = `${percent}% of today's trail`;
-  goalLabel.textContent = `${goal} min goal`;
-  progressBar.style.width = `${percent}%`;
-  progressNote.textContent = percent >= 100
-    ? "Waypoint reached. Extra movement is recorded without pushing the trail past today's goal."
-    : `${minutes} of ${goal} minutes logged${record.steps ? `, ${Number(record.steps).toLocaleString()} steps noted` : ""}.`;
-
-  const goalInput = document.getElementById("walkingGoalInput");
-  const minutesInput = document.getElementById("walkingMinutesInput");
-  const stepsInput = document.getElementById("walkingStepsInput");
-  if (goalInput) goalInput.value = goal;
-  if (minutesInput) minutesInput.value = minutes;
-  if (stepsInput) stepsInput.value = Number(record.steps) || "";
-}
-
-function openWalkingDialog() {
-  renderWalkingTracker();
-  openDialog(document.getElementById("walkingDialog"));
-}
-
-function saveWalkingLog() {
-  const goalMinutes = Math.max(5, Number(document.getElementById("walkingGoalInput").value) || 30);
-  const minutes = Math.max(0, Number(document.getElementById("walkingMinutesInput").value) || 0);
-  const steps = Math.max(0, Number(document.getElementById("walkingStepsInput").value) || 0);
-  questState.walkingTracker ||= {};
-  questState.walkingTracker[todayKey()] = { goalMinutes, minutes, steps, updatedAt: new Date().toISOString() };
-  saveUserJson(stateKey, questState);
-  renderWalkingTracker();
 }
 
 function selectedClassPlan() {
@@ -1978,6 +1944,20 @@ function rerunCharacterCreation() {
   renderOnboarding();
 }
 
+function navigateToPage(pageId) {
+  document.querySelectorAll(".app-page, .page-link").forEach(element => element.classList.remove("active"));
+  document.getElementById(pageId)?.classList.add("active");
+  document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
+  if (pageId === "workoutPage") {
+    document.querySelector('[data-tab="today"]')?.click();
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => navigateToPage(button.dataset.page));
+});
+
 document.querySelectorAll(".tab").forEach(button => {
   button.addEventListener("click", () => {
     document.querySelectorAll(".tab, .panel").forEach(el => el.classList.remove("active"));
@@ -2155,23 +2135,8 @@ document.getElementById("welcomeLogin").addEventListener("click", () => {
 });
 
 document.querySelectorAll("[data-open-workout]").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".tab, .panel").forEach(el => el.classList.remove("active"));
-    document.querySelector('[data-tab="today"]').classList.add("active");
-    document.getElementById("today").classList.add("active");
-    document.getElementById("today").scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+  button.addEventListener("click", () => navigateToPage("workoutPage"));
 });
-
-document.querySelectorAll("[data-open-walking]").forEach(button => {
-  button.addEventListener("click", openWalkingDialog);
-});
-
-document.getElementById("walkingDialog").addEventListener("click", event => {
-  if (event.target.closest(".icon-close")) closeDialog(document.getElementById("walkingDialog"));
-});
-
-document.getElementById("saveWalkingLog").addEventListener("click", saveWalkingLog);
 
 document.getElementById("onboardingBack").addEventListener("click", () => {
   onboardingStep = Math.max(0, onboardingStep - 1);
