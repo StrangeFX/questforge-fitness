@@ -1424,7 +1424,7 @@ function render() {
     <article class="day-card ${day[2] ? "complete" : ""}">
       <strong>${day[0]}</strong>
       <span>${day[1]}</span>
-      <div class="check">${day[2] ? "Done" : ""}</div>
+      <div class="check" ${day[2] ? 'aria-label="Complete"' : 'aria-hidden="true"'}>${day[2] ? "✓" : ""}</div>
     </article>
   `).join("");
   document.getElementById("weeklyScore").textContent = `${plan.week.filter(day => day[2]).length} of ${plan.week.length} complete`;

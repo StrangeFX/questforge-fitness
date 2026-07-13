@@ -14,6 +14,14 @@
   --sky: #31baff;
   --violet: #a84dff;
   --ruby: #ff4fba;
+  /* Shared surface + accents lifted from the Walking Tracker (style master),
+     so every page draws its panels from one calm violet->navy recipe. */
+  --panel-top: rgba(33,22,75,.92);
+  --panel-bottom: rgba(8,13,42,.94);
+  --stone: #9086a3;
+  --emboss: 0 1px 0 #3a1e00, 0 0 14px rgba(168,77,255,.22);
+  --panel-surface: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
+  --data-font: "Courier New", ui-monospace, monospace;
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -470,17 +478,31 @@ button { cursor: pointer; }
 #workoutPage > .class-panel,
 #workoutPage > .score-strip { display: none; }
 .home-welcome {
-  margin: 0 0 12px;
+  margin: 0;
   padding: 20px;
-  border: 1px solid rgba(247,200,95,.62);
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(20,86,207,.42), rgba(33,22,75,.88));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 12px 30px rgba(0,0,0,.25);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(49,186,255,.14), transparent 42%),
+    radial-gradient(circle at 92% 8%, rgba(168,77,255,.16), transparent 40%),
+    var(--panel-surface);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
 }
+/* Home page uses the master's gap rhythm instead of per-element margins.
+   Scoped to #homePage so the Workout page's shared components are untouched. */
+#homePage.active {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#homePage > .home-welcome,
+#homePage > .home-class-flag,
+#homePage > .score-strip,
+#homePage > .quick-actions { margin: 0; }
+
 .home-welcome h2 { margin-bottom: 8px; }
 .home-welcome p:last-child { margin-bottom: 0; color: var(--muted); line-height: 1.4; }
 .home-class-flag {
-  margin: 0 0 12px;
   color: var(--gold-2);
   font-size: 13px;
   font-weight: 800;
@@ -491,7 +513,7 @@ button { cursor: pointer; }
 .eyebrow, .quest-label { margin: 0 0 3px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
 .active-user-label { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 h1, h2, h3, h4, p { margin-top: 0; }
-h1, h2, h3, h4 { text-shadow: 0 1px 0 #3a1e00, 0 0 14px rgba(168,77,255,.22); }
+h1, h2, h3, h4 { text-shadow: var(--emboss); }
 h1 { margin-bottom: 0; font-size: 30px; letter-spacing: 0; color: var(--gold-2); }
 h2 { margin-bottom: 8px; font-size: 30px; line-height: 1.02; letter-spacing: 0; color: var(--gold-2); }
 h3 { margin-bottom: 0; font-size: 18px; }
@@ -568,33 +590,48 @@ h4 { margin-bottom: 8px; }
 
 .quick-action {
   display: grid;
-  grid-template-columns: 38px 1fr auto;
-  gap: 10px;
+  grid-template-columns: 44px 1fr auto;
+  gap: 12px;
   align-items: center;
   width: 100%;
-  min-height: 62px;
-  padding: 10px 12px;
-  border: 1px solid rgba(247,200,95,.54);
-  border-radius: 8px;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   color: var(--ink);
-  background: linear-gradient(90deg, rgba(20,86,207,.48), rgba(33,22,75,.82));
+  background: var(--panel-surface);
   text-align: left;
   text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 9px 24px rgba(0,0,0,.22);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  transition: border-color .2s ease, transform .2s ease;
 }
 
-.quick-action:hover, .quick-action:focus-visible { border-color: var(--gold-2); }
+.quick-action:hover, .quick-action:focus-visible {
+  border-color: var(--gold-2);
+  transform: translateY(-1px);
+}
 .quick-action-icon {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(247,200,95,.68);
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--stone);
   border-radius: 50%;
   color: var(--gold-2);
-  background: rgba(8,13,42,.7);
-  font-weight: 900;
+  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(180deg, #241a52, #0c0f2e);
 }
+.quick-action-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.quick-action[data-open-workout] .quick-action-icon svg { stroke: var(--gold-2); }
+.quick-action[href] .quick-action-icon svg,
+.quick-action[data-open-walking] .quick-action-icon svg { stroke: var(--sky); }
 .quick-action strong, .quick-action small { display: block; }
 .quick-action strong { color: var(--gold-2); }
 .quick-action small { margin-top: 3px; color: var(--muted); font-size: 12px; }
@@ -602,12 +639,10 @@ h4 { margin-bottom: 8px; }
 
 .score-strip { gap: 8px; margin-bottom: 14px; }
 .score-strip article, .macro-grid article, .fuel-card, .exercise-card, .achievement, .day-card, .class-panel {
-  border: 1px solid rgba(247,200,95,.5);
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(33,22,75,.88), rgba(8,13,42,.9)),
-    rgba(17,16,42,.86);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 9px 24px rgba(0,0,0,.26);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-surface);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
 }
 .class-panel { padding: 12px; margin-bottom: 14px; position: relative; overflow: hidden; }
 .class-panel:before {
@@ -644,7 +679,14 @@ h4 { margin-bottom: 8px; }
   box-shadow: 0 0 12px rgba(49,186,255,.58);
 }
 .score-strip article { flex: 1; padding: 12px; }
-.score-strip span, .macro-grid strong { display: block; font-weight: 800; color: var(--gold-2); }
+.score-strip span, .macro-grid strong {
+  display: block;
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: .01em;
+  color: var(--gold-2);
+}
 .score-strip small { font-size: 12px; }
 
 .tabs { gap: 6px; padding: 5px; margin-bottom: 16px; border: 1px solid rgba(247,200,95,.54); border-radius: 8px; background: rgba(7,8,25,.72); box-shadow: inset 0 0 24px rgba(49,186,255,.08); }
@@ -1039,7 +1081,7 @@ h4 { margin-bottom: 8px; }
 .yoga .figure:after { width: 40px; height: 12px; left: -8px; top: 24px; background: var(--violet); transform: rotate(10deg); }
 
 .milestone-track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-.milestone { min-height: 64px; padding: 10px; border-radius: 8px; background: rgba(13,11,48,.84); border: 1px solid rgba(247,200,95,.38); }
+.milestone { min-height: 64px; padding: 10px; border-radius: 10px; background: var(--panel-surface); border: 1px solid var(--line); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
 .milestone.done { background: linear-gradient(180deg, rgba(28,90,215,.34), rgba(12,48,44,.45)); border-color: rgba(84,229,157,.55); }
 .milestone strong { display: block; font-size: 13px; }
 .milestone span { color: var(--muted); font-size: 12px; }
@@ -1048,8 +1090,8 @@ h4 { margin-bottom: 8px; }
 .day-card { padding: 12px; display: grid; grid-template-columns: 58px 1fr auto; gap: 10px; align-items: center; }
 .day-card strong { display: block; }
 .day-card span { color: var(--muted); font-size: 13px; }
-.check { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--muted); }
-.complete .check { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #10201b; font-weight: 900; box-shadow: 0 0 12px rgba(247,200,95,.42); }
+.check { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; line-height: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--muted); }
+.complete .check { background: linear-gradient(180deg, var(--gold-2), var(--gold)); border-color: var(--gold); color: #10201b; font-weight: 900; box-shadow: 0 0 12px rgba(247,200,95,.42); }
 
 .exercise-library {
   display: grid;
