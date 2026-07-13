@@ -1,6 +1,14 @@
 # QuestForge Fitness
 
-QuestForge Fitness is a local-first, RPG-inspired fitness planner. The app is currently a dependency-free PWA prototype with structured workout data, offline assets, local user profiles, daily workout generation, exercise logging, and guided exercise cards.
+QuestForge Fitness is a local-first, RPG-inspired fitness planner. The app is currently a dependency-free PWA prototype with structured workout data, offline assets, local user profiles, daily workout generation, exercise logging, guided exercise cards, a cleaner welcome/auth entry flow, and a goal-relative walking tracker.
+
+## Live App and Source
+
+- Live GitHub Pages app: https://strangefx.github.io/questforge-fitness/
+- GitHub repository: https://github.com/StrangeFX/questforge-fitness
+- Main branch: `main`
+
+The hosted GitHub Pages version is the current anywhere-accessible trial path. It is still a PWA/web app, not a native iOS app.
 
 ## Run Locally
 
@@ -30,10 +38,16 @@ If Node.js is installed and available on PATH, `npm run dev` also works.
 
 The check script validates JavaScript syntax, manifest/service worker asset references, workout table headers, media paths, duplicate workout ids, and class table coverage.
 
+Current validation target:
+
+```text
+QuestForge check passed: 120 workouts, 6 classes.
+```
+
 ## Current Structure
 
 - `index.html`: app shell and dialogs.
-- `app.js`: product logic, local users, onboarding, workout generation, logging, and rendering.
+- `app.js`: product logic, local users, welcome/auth flow, onboarding, workout generation, logging, walking tracker, and rendering.
 - `styles.css`: visual system.
 - `data/workouts.tsv`: master exercise table.
 - `data/class-mixes.tsv`: workout category proportions by class.

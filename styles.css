@@ -49,6 +49,73 @@ button { cursor: pointer; }
   display: grid;
 }
 
+.welcome-card {
+  width: min(100%, 460px);
+  padding: clamp(22px, 6vw, 42px);
+  border: 1px solid rgba(247,200,95,.72);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(12,14,38,.96), rgba(5,7,19,.98)),
+    url("assets/questforge-poster.png") center / cover no-repeat;
+  box-shadow: 0 30px 90px rgba(0,0,0,.72), inset 0 0 0 1px rgba(255,255,255,.1), 0 0 42px rgba(49,186,255,.14);
+  text-align: center;
+}
+
+.welcome-mark {
+  display: grid;
+  place-items: center;
+  min-height: 108px;
+  margin-bottom: 22px;
+}
+
+.welcome-mark img {
+  display: block;
+  width: min(100%, 360px);
+  max-height: 120px;
+  object-fit: contain;
+}
+
+.welcome-card h1 {
+  margin: 8px 0 12px;
+  color: var(--gold-2);
+  font-size: clamp(30px, 8vw, 42px);
+  line-height: 1.03;
+}
+
+.welcome-copy {
+  max-width: 370px;
+  margin: 0 auto;
+  color: #e8def6;
+  line-height: 1.5;
+}
+
+.welcome-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 22px 0;
+}
+
+.welcome-pillars span {
+  padding: 8px 4px;
+  border: 1px solid rgba(247,200,95,.34);
+  border-radius: 7px;
+  color: var(--muted);
+  background: rgba(8,13,42,.72);
+  font-size: 11px;
+}
+
+.welcome-actions { display: grid; gap: 9px; }
+.welcome-primary { min-height: 48px; }
+.welcome-secondary { min-height: 44px; }
+
+.welcome-footnote {
+  margin: 18px 0 0;
+  color: rgba(201,184,233,.78);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 /* The poster wrapper shrink-wraps the image exactly, so the invisible
    button can be placed as a percentage of the artwork itself. Anchoring
    to the viewport instead broke on iPhone standalone mode: the taller
@@ -147,6 +214,8 @@ button { cursor: pointer; }
 
 .onboarding-screen h2 { font-size: 34px; margin-bottom: 10px; }
 .onboarding-screen p { color: #e8def6; line-height: 1.42; }
+.onboarding-name-field { display: grid; gap: 6px; margin: 12px 0; color: var(--muted); text-align: left; }
+.onboarding-name-field input { width: 100%; }
 .onboarding-actions {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -450,6 +519,64 @@ h4 { margin-bottom: 8px; }
 .dumbbell:before, .dumbbell:after { content: ""; position: absolute; top: -11px; width: 14px; height: 36px; background: var(--sky); border-radius: 4px; }
 .dumbbell:before { left: 0; }
 .dumbbell:after { right: 0; }
+
+.quick-actions {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.quick-action {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 62px;
+  padding: 10px 12px;
+  border: 1px solid rgba(247,200,95,.54);
+  border-radius: 8px;
+  color: var(--ink);
+  background: linear-gradient(90deg, rgba(20,86,207,.48), rgba(33,22,75,.82));
+  text-align: left;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 9px 24px rgba(0,0,0,.22);
+}
+
+.quick-action:hover, .quick-action:focus-visible { border-color: var(--gold-2); }
+.quick-action-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(247,200,95,.68);
+  border-radius: 50%;
+  color: var(--gold-2);
+  background: rgba(8,13,42,.7);
+  font-weight: 900;
+}
+.quick-action strong, .quick-action small { display: block; }
+.quick-action strong { color: var(--gold-2); }
+.quick-action small { margin-top: 3px; color: var(--muted); font-size: 12px; }
+.quick-action-arrow { color: var(--gold-2); font-size: 22px; }
+
+.dialog-intro { color: var(--muted); line-height: 1.4; }
+.trail-progress-card {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid rgba(84,229,157,.38);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(33,22,75,.84), rgba(8,13,42,.9));
+}
+.trail-progress-heading { display: flex; justify-content: space-between; gap: 10px; color: var(--gold-2); }
+.trail-progress-heading span, .trail-progress-card p { color: var(--muted); font-size: 12px; }
+.trail-progress-bar { height: 12px; margin: 12px 0 8px; overflow: hidden; border: 1px solid rgba(247,200,95,.28); border-radius: 999px; background: rgba(255,255,255,.1); }
+.trail-progress-bar i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--mint), var(--sky), var(--gold)); transition: width .25s ease; }
+.trail-progress-card p { margin: 0; }
+.walking-input-grid { display: grid; gap: 9px; margin: 12px 0; }
+.walking-input-grid label { display: grid; grid-template-columns: 1fr 145px; gap: 8px; align-items: center; color: var(--muted); }
+.walking-input-grid label span { display: flex; align-items: center; gap: 5px; }
+.walking-input-grid input { width: 100%; min-width: 0; }
+.tracker-device-note { color: var(--muted); font-size: 12px; line-height: 1.35; }
 
 .score-strip { gap: 8px; margin-bottom: 14px; }
 .score-strip article, .macro-grid article, .fuel-card, .exercise-card, .achievement, .day-card, .class-panel {

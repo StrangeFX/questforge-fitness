@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "QuestForge Fitness, an RPG-inspired workout planner and tracker.",
+  "homepage": "https://strangefx.github.io/questforge-fitness/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StrangeFX/questforge-fitness.git"
+  },
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",

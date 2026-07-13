@@ -12,7 +12,7 @@ QuestForge Fitness is an RPG-inspired workout planner and tracker that turns dai
 
 The primary user wants an app they can use on an iPhone anywhere: at home, work, the store, or outdoors. The desired long-term outcome is a real phone app experience with durable user data, daily workout generation, exercise guidance, gamification, and eventual integration with Apple Health and Withings devices.
 
-The current app is a local-first PWA prototype. It can run from a local dev server and can be hosted later. It is not yet a native iOS app.
+The current app is a local-first PWA prototype that is now also hosted through GitHub Pages for anywhere-accessible trials. It is not yet a native iOS app.
 
 ## Product Theme
 
@@ -35,15 +35,28 @@ Location:
 outputs/fitquest
 ```
 
+Source and hosted app:
+
+```text
+GitHub repository: https://github.com/StrangeFX/questforge-fitness
+Git remote: https://github.com/StrangeFX/questforge-fitness.git
+Main branch: main
+Live GitHub Pages app: https://strangefx.github.io/questforge-fitness/
+```
+
 Current form:
 
 - Dependency-free static web app / PWA prototype.
+- Hosted on GitHub Pages for live browser/iPhone trials.
 - Local-first storage using browser `localStorage`.
 - Multiple local users are supported.
+- New users see a welcome page using the QuestForge logo; Sign up enters character creation and Log in opens home directly.
 - Daily workouts are generated dynamically from structured TSV data.
 - Guided exercise cards expand to show instructions, media, progression, regression, feedback inputs, and Done button.
 - Strength movements support weight and rep logging.
 - Cardio movements support actual minutes completed.
+- Home includes direct buttons for Today's workout and Walking Tracker.
+- Walking Tracker stores a per-user, per-day goal in minutes and reports progress as a percentage of that goal; optional device steps can be recorded alongside it.
 - Exercise media is optional. Missing images show placeholders.
 - The app includes fantasy class images, a launch poster, app icon, logo assets, and several exercise demonstration images.
 
@@ -88,7 +101,7 @@ The validator checks:
 Expected current result:
 
 ```text
-QuestForge check passed: 82 workouts, 6 classes.
+QuestForge check passed: 120 workouts, 6 classes.
 ```
 
 ## Important Files
@@ -295,14 +308,14 @@ Exercise media is referenced from `data/workouts.tsv` in the `media_src` column.
 ## Current Known Limitations
 
 - The app is not yet a native iPhone app.
-- It does not work anywhere unless hosted somewhere reachable by the phone.
+- The app now has an anywhere-accessible GitHub Pages version, but it is still browser/PWA based.
 - Data is local to the browser/device.
 - There is no account system or cloud sync.
 - Apple Health and Withings are not connected yet.
 - Some exercise images are placeholders.
 - Most logic is still in one large `app.js`; it should be split into modules.
 - No automated UI tests yet.
-- No production hosting pipeline yet.
+- Production-like hosting currently uses GitHub Pages; there is not yet a fuller deployment pipeline with environments, previews, or backend data.
 - No TestFlight/App Store packaging yet.
 
 ## Recommended Next Steps
@@ -310,9 +323,9 @@ Exercise media is referenced from `data/workouts.tsv` in the `media_src` column.
 ### Near-Term Practical Path
 
 1. Keep polishing the PWA daily loop.
-2. Host the app on HTTPS so it can be opened anywhere from iPhone.
-3. Add a durable backend or account sync before relying on it for long-term personal data.
-4. Improve iPhone Add to Home Screen behavior.
+2. Use the GitHub Pages app for real-world iPhone trials.
+3. Improve iPhone Add to Home Screen behavior.
+4. Add a durable backend or account sync before relying on it for long-term personal data.
 5. Split `app.js` into modules after behavior stabilizes.
 
 ### Real iPhone App Path

@@ -458,6 +458,7 @@ let activeLibraryExerciseId = null;
 let onboardingStep = 0;
 let launchSplashDismissed = false;
 let onboardingDraft = {
+  name: activeUser?.name === "Adventurer" ? "" : (activeUser?.name || profile.name || ""),
   age: profile.age,
   height: profile.height,
   weight: profile.weight,
@@ -1431,7 +1432,54 @@ function render() {
 
   renderHeroStatusCheck();
   renderExerciseLibrary();
+  renderWalkingTracker();
   if (previousSession) openRolloverDialog(previousSession);
+}
+
+function walkingRecord() {
+  questState.walkingTracker ||= {};
+  return questState.walkingTracker[todayKey()] || { goalMinutes: 30, minutes: 0, steps: 0 };
+}
+
+function renderWalkingTracker() {
+  const record = walkingRecord();
+  const goal = Math.max(5, Number(record.goalMinutes) || 30);
+  const minutes = Math.max(0, Number(record.minutes) || 0);
+  const percent = Math.min(100, Math.round(minutes / goal * 100));
+  const progressLabel = document.getElementById("walkingProgressLabel");
+  const goalLabel = document.getElementById("walkingGoalLabel");
+  const progressBar = document.getElementById("walkingProgressBar");
+  const progressNote = document.getElementById("walkingProgressNote");
+  if (!progressLabel || !goalLabel || !progressBar || !progressNote) return;
+
+  progressLabel.textContent = `${percent}% of today's trail`;
+  goalLabel.textContent = `${goal} min goal`;
+  progressBar.style.width = `${percent}%`;
+  progressNote.textContent = percent >= 100
+    ? "Waypoint reached. Extra movement is recorded without pushing the trail past today's goal."
+    : `${minutes} of ${goal} minutes logged${record.steps ? `, ${Number(record.steps).toLocaleString()} steps noted` : ""}.`;
+
+  const goalInput = document.getElementById("walkingGoalInput");
+  const minutesInput = document.getElementById("walkingMinutesInput");
+  const stepsInput = document.getElementById("walkingStepsInput");
+  if (goalInput) goalInput.value = goal;
+  if (minutesInput) minutesInput.value = minutes;
+  if (stepsInput) stepsInput.value = Number(record.steps) || "";
+}
+
+function openWalkingDialog() {
+  renderWalkingTracker();
+  openDialog(document.getElementById("walkingDialog"));
+}
+
+function saveWalkingLog() {
+  const goalMinutes = Math.max(5, Number(document.getElementById("walkingGoalInput").value) || 30);
+  const minutes = Math.max(0, Number(document.getElementById("walkingMinutesInput").value) || 0);
+  const steps = Math.max(0, Number(document.getElementById("walkingStepsInput").value) || 0);
+  questState.walkingTracker ||= {};
+  questState.walkingTracker[todayKey()] = { goalMinutes, minutes, steps, updatedAt: new Date().toISOString() };
+  saveUserJson(stateKey, questState);
+  renderWalkingTracker();
 }
 
 function selectedClassPlan() {
@@ -1465,6 +1513,7 @@ const onboardingScreens = [
     eyebrow: "Welcome",
     body: "Turn workouts, walks, yoga, nutrition, and recovery into a guided campaign. We will build your starting character, then hand you today's first quest.",
     render: () => `
+      <label class="onboarding-name-field">Character name <input data-onboard-input="name" type="text" maxlength="32" placeholder="Choose a hero name" value="${escapeHtml(onboardingDraft.name || "")}"></label>
       <div class="quest-preview">
         <strong>How this maps to fitness</strong>
         <ul>
@@ -1697,7 +1746,8 @@ function bindOnboardingControls() {
 
   document.querySelectorAll("[data-onboard-input]").forEach(input => {
     input.addEventListener("input", () => {
-      onboardingDraft[input.dataset.onboardInput] = Number(input.value) || onboardingDraft[input.dataset.onboardInput];
+      const key = input.dataset.onboardInput;
+      onboardingDraft[key] = key === "name" ? input.value : (Number(input.value) || onboardingDraft[key]);
     });
   });
 
@@ -1755,7 +1805,12 @@ function renderOnboarding() {
 }
 
 function completeOnboarding() {
+  const name = (onboardingDraft.name || "").trim() || "Adventurer";
   Object.assign(profile, onboardingDraft);
+  profile.name = name;
+  users = users.map(user => user.id === activeUserId ? { ...user, name } : user);
+  activeUser = users.find(user => user.id === activeUserId) || activeUser;
+  saveJson(usersKey, users);
   saveUserJson(profileKey, profile);
   localStorage.setItem(userScopedKey(onboardingKey), "true");
   document.getElementById("launchSplash")?.classList.remove("active");
@@ -2085,18 +2140,38 @@ document.getElementById("settingsButton").addEventListener("click", openMenuDial
 
 document.getElementById("rerollQuest").addEventListener("click", rerollTodayQuest);
 
-document.getElementById("launchQuestButton").addEventListener("click", () => {
+document.getElementById("welcomeSignUp").addEventListener("click", () => {
   launchSplashDismissed = true;
+  onboardingStep = 0;
   renderOnboarding();
 });
 
-// The splash has exactly one action, so any tap on it begins the quest.
-// This also protects against the tap target and painted banner drifting
-// apart on viewports we have not tested.
-document.getElementById("launchSplash").addEventListener("click", () => {
+document.getElementById("welcomeLogin").addEventListener("click", () => {
   launchSplashDismissed = true;
-  renderOnboarding();
+  localStorage.setItem(userScopedKey(onboardingKey), "true");
+  document.getElementById("launchSplash")?.classList.remove("active");
+  document.getElementById("onboarding")?.classList.remove("active");
+  render();
 });
+
+document.querySelectorAll("[data-open-workout]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab, .panel").forEach(el => el.classList.remove("active"));
+    document.querySelector('[data-tab="today"]').classList.add("active");
+    document.getElementById("today").classList.add("active");
+    document.getElementById("today").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+document.querySelectorAll("[data-open-walking]").forEach(button => {
+  button.addEventListener("click", openWalkingDialog);
+});
+
+document.getElementById("walkingDialog").addEventListener("click", event => {
+  if (event.target.closest(".icon-close")) closeDialog(document.getElementById("walkingDialog"));
+});
+
+document.getElementById("saveWalkingLog").addEventListener("click", saveWalkingLog);
 
 document.getElementById("onboardingBack").addEventListener("click", () => {
   onboardingStep = Math.max(0, onboardingStep - 1);
