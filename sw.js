@@ -1,4 +1,4 @@
-const cacheName = "questforge-fitness-alpha-v45";
+const cacheName = "questforge-fitness-alpha-v46";
 const assets = [
   "./",
   "./index.html",
@@ -18,7 +18,6 @@ const assets = [
   "./assets/questforge-logo-black-bg.png",
   "./assets/questforge-logo-transparent-color.png",
   "./assets/questforge-logo-transparent-black.png",
-  "./assets/questforge-poster.png",
   "./assets/reroll-die.png",
   "./assets/barbarian-class.png",
   "./assets/box-breathing.png",
