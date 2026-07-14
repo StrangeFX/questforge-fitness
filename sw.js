@@ -1,4 +1,4 @@
-const cacheName = "questforge-fitness-alpha-v47";
+const cacheName = "questforge-fitness-alpha-v48";
 const assets = [
   "./",
   "./index.html",

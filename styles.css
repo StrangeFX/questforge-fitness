@@ -495,10 +495,24 @@ button { cursor: pointer; }
   flex-direction: column;
   gap: 14px;
 }
+#homePage > .home-logo,
 #homePage > .home-welcome,
 #homePage > .home-class-flag,
 #homePage > .score-strip,
 #homePage > .quick-actions { margin: 0; }
+
+.home-logo {
+  display: grid;
+  place-items: center;
+  padding: 6px 0 2px;
+}
+.home-logo img {
+  display: block;
+  width: min(80%, 300px);
+  max-height: 96px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 18px rgba(247,200,95,.25));
+}
 
 .home-welcome h2 { margin-bottom: 8px; }
 .home-welcome p:last-child { margin-bottom: 0; color: var(--muted); line-height: 1.4; }
