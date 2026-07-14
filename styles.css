@@ -495,24 +495,10 @@ button { cursor: pointer; }
   flex-direction: column;
   gap: 14px;
 }
-#homePage > .home-logo,
 #homePage > .home-welcome,
 #homePage > .home-class-flag,
 #homePage > .score-strip,
 #homePage > .quick-actions { margin: 0; }
-
-.home-logo {
-  display: grid;
-  place-items: center;
-  padding: 6px 0 2px;
-}
-.home-logo img {
-  display: block;
-  width: min(80%, 300px);
-  max-height: 96px;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 18px rgba(247,200,95,.25));
-}
 
 .home-welcome h2 { margin-bottom: 8px; }
 .home-welcome p:last-child { margin-bottom: 0; color: var(--muted); line-height: 1.4; }
@@ -523,6 +509,24 @@ button { cursor: pointer; }
 }
 
 .topbar, .section-heading, .hero { justify-content: space-between; gap: 16px; }
+
+/* Brand wordmark stands in for the old text title in the top bar. */
+.topbar-brand {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  text-shadow: none;
+}
+.topbar-brand img {
+  display: block;
+  height: 46px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 14px rgba(247,200,95,.28));
+}
+
 .eyebrow, .quest-label, small, .exercise-meta, .fuel-card p { color: var(--muted); }
 .eyebrow, .quest-label { margin: 0 0 3px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
 .active-user-label { margin: 4px 0 0; color: var(--muted); font-size: 13px; }

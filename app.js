@@ -1369,7 +1369,8 @@ function render() {
 
   const userName = activeUser?.name || profile.name || "Adventurer";
   const isReturning = questState.xp > 0 || questState.streak > 0 || questState.completedToday;
-  document.getElementById("activeUserName").textContent = userName;
+  const activeUserLabel = document.getElementById("activeUserName");
+  if (activeUserLabel) activeUserLabel.textContent = userName;
   document.getElementById("homeGreeting").textContent = `${isReturning ? "Welcome back" : "Welcome"}, ${userName}.`;
   document.getElementById("homeGreetingSupport").textContent = isReturning
     ? "Your campaign is ready for today's next step."
