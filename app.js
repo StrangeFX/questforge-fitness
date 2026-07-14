@@ -1359,6 +1359,11 @@ function motionMarkup(type) {
   return `<div class="motion ${type}" aria-label="Looping movement animation"><div class="figure"></div>${type === "lift" ? '<div class="bar"></div>' : ""}</div>`;
 }
 
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
 function render() {
   recoverMisfiledRolloverCompletions();
   const previousSession = unresolvedPreviousSession();
@@ -1371,24 +1376,31 @@ function render() {
   const isReturning = questState.xp > 0 || questState.streak > 0 || questState.completedToday;
   const activeUserLabel = document.getElementById("activeUserName");
   if (activeUserLabel) activeUserLabel.textContent = userName;
-  document.getElementById("homeGreeting").textContent = `${isReturning ? "Welcome back" : "Welcome"}, ${userName}.`;
-  document.getElementById("homeGreetingSupport").textContent = isReturning
-    ? "Your campaign is ready for today's next step."
-    : "Your first quest is ready whenever you are.";
-  document.getElementById("homeClassFlag").textContent = `Current class: ${plan.title}`;
-  document.getElementById("goalTitle").textContent = `${plan.title} Path`;
-  document.getElementById("goalSubtitle").textContent = plan.subtitle;
-  document.getElementById("classRole").textContent = `${plan.title} Training Mix`;
-  document.getElementById("classFocus").textContent = plan.focus;
   const levelValue = `Level ${Math.floor(questState.xp / 500) + 1}`;
   const streakValue = `${questState.streak} days`;
   const xpValue = `${questState.xp.toLocaleString()} XP`;
-  document.getElementById("homeXpValue").textContent = xpValue;
-  document.getElementById("homeStreakValue").textContent = streakValue;
-  document.getElementById("homeLevelValue").textContent = levelValue;
-  document.getElementById("xpValue").textContent = xpValue;
-  document.getElementById("streakValue").textContent = streakValue;
-  document.getElementById("levelValue").textContent = levelValue;
+
+  // Home (Quest Board) — every value bound to real state.
+  const dayActivities = exercisesForToday();
+  const totalActivities = dayActivities.length;
+  const doneActivities = Math.max(0, totalActivities - exercises.length);
+  const relicCount = Array.isArray(profile.relics) ? profile.relics.length : 3;
+  setText("homeStreakCount", questState.streak > 0 ? `${questState.streak}-Day Streak` : "Start your streak");
+  setText("homeQuestTitle", `${plan.title} Path`);
+  setText("homeQuestMeta", `${plan.focus} · ${totalActivities} ${totalActivities === 1 ? "activity" : "activities"}`);
+  setText("homeQuestXp", "+180 XP");
+  setText("homeQuestCount", `${doneActivities}/${totalActivities} done`);
+  setText("homeTotalXp", questState.xp.toLocaleString());
+  setText("homeRelicCount", String(relicCount));
+
+  // Workout page
+  setText("goalTitle", `${plan.title} Path`);
+  setText("goalSubtitle", plan.subtitle);
+  setText("classRole", `${plan.title} Training Mix`);
+  setText("classFocus", plan.focus);
+  setText("xpValue", xpValue);
+  setText("streakValue", streakValue);
+  setText("levelValue", levelValue);
   document.getElementById("calorieTarget").textContent = `${nutrition.calories.toLocaleString()} kcal`;
   document.getElementById("proteinValue").textContent = `${nutrition.protein}g`;
   document.getElementById("fiberValue").textContent = `${nutrition.fiber}g`;
@@ -1949,6 +1961,10 @@ function navigateToPage(pageId) {
   document.querySelectorAll(".app-page, .page-link").forEach(element => element.classList.remove("active"));
   document.getElementById(pageId)?.classList.add("active");
   document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
+  // Keep the bottom tab bar in sync no matter how navigation was triggered
+  // (e.g. tapping the Today's Quest panel routes here without a tab tap).
+  document.querySelectorAll(".tabbar-item").forEach(el => el.classList.remove("active"));
+  document.querySelector(`.tabbar-item[data-nav="${pageId}"]`)?.classList.add("active");
   if (pageId === "workoutPage") {
     document.querySelector('[data-tab="today"]')?.click();
   }
@@ -1957,6 +1973,17 @@ function navigateToPage(pageId) {
 
 document.querySelectorAll("[data-page]").forEach(button => {
   button.addEventListener("click", () => navigateToPage(button.dataset.page));
+});
+
+document.querySelectorAll(".tabbar-item[data-nav]").forEach(item => {
+  item.addEventListener("click", () => {
+    navigateToPage(item.dataset.nav);
+    document.querySelectorAll(".tabbar-item").forEach(el => el.classList.remove("active"));
+    item.classList.add("active");
+    if (item.dataset.subtab) {
+      document.querySelector(`[data-tab="${item.dataset.subtab}"]`)?.click();
+    }
+  });
 });
 
 document.querySelectorAll(".tab").forEach(button => {

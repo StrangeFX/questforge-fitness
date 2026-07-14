@@ -1,9 +1,17 @@
-const cacheName = "questforge-fitness-alpha-v49";
+const cacheName = "questforge-fitness-alpha-v50";
 const assets = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./assets/fonts/cinzel-latin.woff2",
+  "./assets/fonts/worksans-latin.woff2",
+  "./assets/wood-bg.png",
+  "./assets/icon-home.png",
+  "./assets/icon-walk.png",
+  "./assets/icon-shield.png",
+  "./assets/icon-flame.png",
+  "./assets/icon-xp.png",
   "./data/workouts.tsv",
   "./data/class-mixes.tsv",
   "./data/class-preferences.tsv",

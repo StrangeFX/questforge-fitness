@@ -1,3 +1,20 @@
+/* Self-hosted display + body faces for the Quest Board direction.
+   Latin-only variable subsets, so the PWA stays fully offline. */
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url('assets/fonts/cinzel-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('assets/fonts/worksans-latin.woff2') format('woff2');
+}
+
 :root {
   color-scheme: dark;
   --bg: #060916;
@@ -22,6 +39,20 @@
   --emboss: 0 1px 0 #3a1e00, 0 0 14px rgba(168,77,255,.22);
   --panel-surface: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
   --data-font: "Courier New", ui-monospace, monospace;
+  /* Quest Board direction (new identity — rolling out screen by screen). */
+  --wood-base: #120b06;
+  --wood-frame: #2a1c0f;
+  --wood-line: #4a3418;
+  --wood-dim: #3a2c1a;
+  --qb-gold: #e8bd63;
+  --qb-gold-light: #f4d78a;
+  --wood-ink-bright: #fbeecb;
+  --wood-ink: #f4e2b8;
+  --wood-ink-2: #c9b48a;
+  --wood-muted: #a68f66;
+  --wood-muted-2: #8a7654;
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Work Sans", system-ui, sans-serif;
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -30,10 +61,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 18% 8%, rgba(123,57,255,.34) 0, transparent 29%),
-    radial-gradient(circle at 84% 11%, rgba(31,186,255,.2) 0, transparent 26%),
-    linear-gradient(180deg, rgba(8,9,34,.72), rgba(6,9,22,.96)),
-    var(--bg);
+    radial-gradient(circle at 50% 0%, rgba(232,189,99,.10) 0, transparent 42%),
+    linear-gradient(180deg, #160d05, #0c0703 70%),
+    var(--wood-base);
   color: var(--ink);
 }
 
@@ -1354,3 +1384,190 @@ input, select {
   body { display: grid; place-items: start center; }
   .app-shell { min-height: auto; margin: 24px auto; border: 1px solid rgba(247,200,95,.44); border-radius: 24px; box-shadow: 0 24px 80px rgba(0,0,0,.45); }
 }
+
+/* ============================================================
+   QUEST BOARD DIRECTION — pilot (Home screen + bottom tab bar)
+   New wood/parchment identity, rolling out screen by screen.
+   Scoped to #homePage and the tab bar so pages not yet
+   converted keep their current styling.
+   ============================================================ */
+
+/* leave room for the fixed bottom tab bar */
+.app-shell { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+
+/* Home page: Quest Board layout */
+#homePage.active {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: var(--font-body);
+}
+
+/* Streak strip — wood plank card */
+.qb-streak {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 15px;
+  border: 2px solid var(--wood-line);
+  border-radius: 14px;
+  background: url('assets/wood-bg.png') center/cover;
+  overflow: hidden;
+}
+.qb-streak::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10,6,2,.55);
+}
+.qb-streak > * { position: relative; z-index: 1; }
+.qb-streak img { width: 34px; height: 34px; object-fit: contain; flex: none; }
+.qb-streak-count { color: var(--wood-ink); font-size: 14px; font-weight: 700; }
+.qb-streak-sub { color: #d8c49a; font-size: 10.5px; margin-top: 1px; }
+
+/* Hero Status Check card */
+.qb-herocheck {
+  border: 1px solid var(--wood-line);
+  border-radius: 14px;
+  padding: 15px;
+  background: rgba(232,189,99,.08);
+}
+.qb-herocheck-title {
+  font-family: var(--font-display);
+  color: var(--qb-gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-shadow: none;
+}
+.qb-herocheck-sub { color: var(--wood-ink-2); font-size: 12px; margin-top: 4px; line-height: 1.4; }
+.qb-cta {
+  display: block;
+  width: 100%;
+  margin-top: 11px;
+  padding: 11px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--qb-gold);
+  color: #241505;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+.qb-cta:hover, .qb-cta:focus-visible { background: var(--qb-gold-light); }
+
+/* Today's Quest — wood panel with overlaid text */
+.qb-quest {
+  position: relative;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  border: 2px solid var(--wood-line);
+  border-radius: 18px;
+  background: url('assets/wood-bg.png') center/cover;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: var(--wood-ink);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.qb-quest::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,4,1,.30), rgba(8,4,1,.52));
+}
+.qb-quest > * { position: relative; z-index: 1; }
+.qb-quest:hover, .qb-quest:focus-visible { border-color: var(--qb-gold); transform: translateY(-1px); }
+.qb-quest-eyebrow {
+  font-family: var(--font-display);
+  color: var(--wood-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-shadow: 0 2px 6px rgba(0,0,0,.6);
+}
+.qb-quest-title {
+  color: var(--wood-ink-bright);
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,.7);
+}
+.qb-quest-meta {
+  color: #e6d3a8;
+  font-size: 12px;
+  margin-top: 3px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.7);
+}
+.qb-quest-tags { display: flex; gap: 8px; margin-top: 11px; }
+.qb-tag {
+  padding: 5px 10px;
+  border: 1px solid rgba(232,189,99,.5);
+  border-radius: 8px;
+  background: rgba(0,0,0,.4);
+  color: var(--wood-ink);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stat plaques */
+.qb-plaques { display: flex; gap: 10px; }
+.qb-plaque {
+  flex: 1;
+  padding: 13px 12px;
+  border: 1px solid var(--wood-line);
+  border-radius: 14px;
+  background: rgba(232,189,99,.06);
+  text-align: center;
+}
+.qb-plaque img { width: 32px; height: 32px; object-fit: contain; }
+.qb-plaque-value {
+  color: var(--wood-ink);
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.qb-plaque-label { color: var(--wood-muted); font-size: 10px; margin-top: 1px; }
+
+/* ---- Bottom tab bar (new global nav) ---- */
+.tabbar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(100%, 440px);
+  height: calc(84px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #1a1006;
+  border-top: 2px solid var(--wood-line);
+  z-index: 20;
+}
+.tabbar-item {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tabbar-item img { width: 30px; height: 30px; object-fit: contain; opacity: .5; transition: opacity .2s ease; }
+.tabbar-item.active img { opacity: 1; }
+.tabbar-item.active { background: rgba(232,189,99,.10); }
+.tabbar-item:focus-visible { outline: 2px solid var(--qb-gold); outline-offset: 2px; }
