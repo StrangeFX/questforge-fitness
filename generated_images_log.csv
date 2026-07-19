@@ -1,0 +1,19 @@
+﻿row_number,workout_name,filename,column_ag_value,status,notes
+3,march_in_place,march_in_place.png,assets/march_in_place.png,generated,proof of concept; no filename sanitization required
+4,easy_walk,easy_walk.png,assets/easy_walk.png,generated,no filename sanitization required
+3,march_in_place,march_in_place.png,assets/march_in_place.png,regenerated,updated title to remove underscores and use title case
+4,easy_walk,easy_walk.png,assets/easy_walk.png,regenerated,updated title to remove underscores and use title case
+5,nature_walk,nature_walk.png,assets/nature_walk.png,generated,no filename sanitization required; displayed title Nature Walk
+7,fast_walk_intervals,fast_walk_intervals.png,assets/fast_walk_intervals.png,generated,no filename sanitization required; displayed title Fast Walk Intervals
+8,run_walk_intervals,run_walk_intervals.png,assets/run_walk_intervals.png,generated,no filename sanitization required; displayed title Run Walk Intervals
+9,easy_jog,easy_jog.png,assets/easy_jog.png,generated,no filename sanitization required; displayed title Easy Jog
+10,"outdoor_quest_walk","outdoor_quest_walk.png","assets/outdoor_quest_walk.png",generated,"no filename sanitization required; displayed title Outdoor Quest Walk"
+11,"stationary_bike_easy","stationary_bike_easy.png","assets/stationary_bike_easy.png",generated,"no filename sanitization required; displayed title Stationary Bike Easy"
+12,"bike_intervals","bike_intervals.png","assets/bike_intervals.png",generated,"no filename sanitization required; displayed title Bike Intervals"
+13,"elliptical_easy","elliptical_easy.png","assets/elliptical_easy.png",generated,"no filename sanitization required; displayed title Elliptical Easy"
+14,"row_intervals","row_intervals.png","assets/row_intervals.png",generated,"no filename sanitization required; displayed title Row Intervals"
+16,"box_squat","box_squat.png","assets/box_squat.png",generated,"no filename sanitization required; displayed title Box Squat"
+17,"sit_to_stand","sit_to_stand.png","assets/sit_to_stand.png",generated,"no filename sanitization required; displayed title Sit To Stand"
+18,"reverse_lunge","reverse_lunge.png","assets/reverse_lunge.png",generated,"no filename sanitization required; displayed title Reverse Lunge"
+19,"step_up","step_up.png","assets/step_up.png",generated,"no filename sanitization required; displayed title Step Up"
+20,"dumbbell_deadlift","dumbbell_deadlift.png","assets/dumbbell_deadlift.png",generated,"no filename sanitization required; displayed title Dumbbell Deadlift"
