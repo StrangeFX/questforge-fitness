@@ -21,31 +21,55 @@
   --ink: #fff6df;
   --muted: #c9b8e9;
   --line: rgba(244,199,91,.42);
-  --panel: #11102a;
-  --panel-2: #19113b;
-  --gold: #f7c85f;
-  --gold-2: #fff0a4;
-  --blue: #1b61e7;
-  --mint: #54e59d;
-  --coral: #ff7a45;
-  --sky: #31baff;
-  --violet: #a84dff;
-  --ruby: #ff4fba;
-  /* Shared surface + accents lifted from the Walking Tracker (style master),
-     so every page draws its panels from one calm violet->navy recipe. */
-  --panel-top: rgba(33,22,75,.92);
-  --panel-bottom: rgba(8,13,42,.94);
+
+  /* ============================================================
+     TWO REGISTERS, ONE LANGUAGE
+     Wood is the core identity. Violet/navy is not removed — it is
+     the second register, framed in the same wood.
+       BOARD  (wood)   = the waking world. Things you act on now.
+       VELLUM (violet) = the journey. Elapsed distance and time.
+     Rule of thumb: if it charts a journey it's vellum; if it's a
+     thing on the board it's wood. Both share the spine below.
+     Spec: docs/design/kit/two-registers.html
+     ============================================================ */
+
+  /* ---- SHARED SPINE (identical in both registers) ---- */
+  /* One gold. Merged from the old --gold #f7c85f and --qb-gold #e8bd63,
+     which were near-identical and guaranteed to drift apart. */
+  --gold: #eec36a;
+  --gold-light: #f4d78a;
+  --gold-2: #fff0a4;          /* bright gold — headings, key figures */
+  --gold-deep: #241505;       /* text on gold fills */
   --stone: #9086a3;
   --emboss: 0 1px 0 #3a1e00, 0 0 14px rgba(168,77,255,.22);
-  --panel-surface: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
   --data-font: "Courier New", ui-monospace, monospace;
-  /* Quest Board direction (new identity — rolling out screen by screen). */
+
+  /* Semantic accents. These carry meaning — do not use decoratively.
+     Canonical names; the legacy aliases below are kept so existing
+     rules keep working and can be migrated component by component. */
+  --shrine: #a84dff;          /* shrine nodes, character/profile */
+  --river: #31baff;           /* walking/travel, water, cardio */
+  --ember: #ff7a45;           /* boss gates, records/deeds, warnings */
+  --sanctuary: #6be5ab;       /* sanctuary, recovery, synced/ok */
+  --violet: var(--shrine);    /* legacy alias — prefer --shrine */
+  --sky: var(--river);        /* legacy alias — prefer --river */
+  --mint: var(--sanctuary);   /* legacy alias — prefer --sanctuary */
+
+  /* ---- REGISTER B: VELLUM (violet -> navy) ---- */
+  /* Warmed from the originals rgba(33,22,75,.92)/rgba(8,13,42,.94),
+     which were mixed against a near-black indigo ground and read cold
+     and blue once the page ground became wood. */
+  --panel-top: rgba(46,30,78,.95);
+  --panel-bottom: rgba(18,16,44,.96);
+  --panel-surface: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
+
+  /* ---- REGISTER A: BOARD (wood) ---- */
   --wood-base: #120b06;
   --wood-frame: #2a1c0f;
   --wood-line: #4a3418;
   --wood-dim: #3a2c1a;
-  --qb-gold: #e8bd63;
-  --qb-gold-light: #f4d78a;
+  --qb-gold: var(--gold);              /* legacy alias — prefer --gold */
+  --qb-gold-light: var(--gold-light);  /* legacy alias — prefer --gold-light */
   --wood-ink-bright: #fbeecb;
   --wood-ink: #f4e2b8;
   --wood-ink-2: #c9b48a;
@@ -70,6 +94,9 @@ body {
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 
+/* ---- Launch splash — BOARD register ----
+   The first surface a new user sees, so it sets the identity: the same
+   wood ground as the app shell, not the legacy indigo. */
 .launch-splash {
   position: fixed;
   inset: 0;
@@ -79,23 +106,39 @@ button { cursor: pointer; }
   overflow: hidden;
   padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
   background:
-    radial-gradient(circle at 50% 0%, rgba(49,186,255,.2), transparent 34%),
-    linear-gradient(180deg, #050713, #02040b);
+    radial-gradient(circle at 50% 0%, rgba(232,189,99,.14), transparent 38%),
+    linear-gradient(180deg, #160d05, #0c0703 70%),
+    var(--wood-base);
+  font-family: var(--font-body);
 }
 
 .launch-splash.active {
   display: grid;
 }
 
+/* Wood plank card. The dark overlay is heavier than on the smaller board
+   cards (.qb-streak uses .55) because this one carries a paragraph of body
+   copy over the grain. */
 .welcome-card {
+  position: relative;
   width: min(100%, 460px);
   padding: clamp(22px, 6vw, 42px);
-  border: 1px solid rgba(247,200,95,.72);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(12,14,38,.96), rgba(5,7,19,.98));
-  box-shadow: 0 30px 90px rgba(0,0,0,.72), inset 0 0 0 1px rgba(255,255,255,.1), 0 0 42px rgba(49,186,255,.14);
+  border: 2px solid var(--wood-line);
+  border-radius: 14px;
+  background: url('assets/wood-bg.png') center/cover;
+  box-shadow: 0 30px 90px rgba(0,0,0,.72), inset 0 0 0 1px rgba(238,195,106,.12);
   text-align: center;
+  overflow: hidden;
 }
+
+.welcome-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10,6,2,.72);
+}
+
+.welcome-card > * { position: relative; z-index: 1; }
 
 .welcome-mark {
   display: grid;
@@ -113,16 +156,24 @@ button { cursor: pointer; }
 
 .welcome-card h1 {
   margin: 8px 0 12px;
-  color: var(--gold-2);
-  font-size: clamp(30px, 8vw, 42px);
-  line-height: 1.03;
+  color: var(--wood-ink-bright);
+  font-family: var(--font-display);
+  font-size: clamp(27px, 7.2vw, 38px);
+  line-height: 1.08;
+  text-shadow: none;
+}
+
+.welcome-card .eyebrow {
+  font-family: var(--font-display);
+  color: var(--gold);
 }
 
 .welcome-copy {
   max-width: 370px;
   margin: 0 auto;
-  color: #e8def6;
-  line-height: 1.5;
+  color: var(--wood-ink-2);
+  line-height: 1.55;
+  font-size: 13.5px;
 }
 
 .welcome-pillars {
@@ -134,10 +185,10 @@ button { cursor: pointer; }
 
 .welcome-pillars span {
   padding: 8px 4px;
-  border: 1px solid rgba(247,200,95,.34);
-  border-radius: 7px;
-  color: var(--muted);
-  background: rgba(8,13,42,.72);
+  border: 1px solid rgba(238,195,106,.34);
+  border-radius: 999px;
+  color: var(--wood-ink);
+  background: rgba(238,195,106,.08);
   font-size: 11px;
 }
 
@@ -147,7 +198,7 @@ button { cursor: pointer; }
 
 .welcome-footnote {
   margin: 18px 0 0;
-  color: rgba(201,184,233,.78);
+  color: var(--wood-muted);
   font-size: 11px;
   line-height: 1.35;
 }
@@ -209,22 +260,23 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: linear-gradient(180deg, rgba(6,9,22,.32), rgba(6,9,22,.92)), var(--bg);
+  background: linear-gradient(180deg, rgba(12,7,3,.4), rgba(12,7,3,.94)), var(--wood-base);
+  font-family: var(--font-body);
 }
 
 .onboarding.active { display: flex; }
 
+/* BOARD register, solid variant — no wood grain behind a long form, where
+   texture under body copy and inputs costs more legibility than it buys. */
 .onboarding-card {
   width: min(100%, 430px);
   max-height: calc(100vh - 36px);
   overflow: auto;
-  border: 1px solid rgba(247,200,95,.8);
-  border-radius: 8px;
+  border: 2px solid var(--wood-line);
+  border-radius: 14px;
   padding: 16px;
-  background:
-    linear-gradient(180deg, rgba(15,12,45,.94), rgba(6,9,26,.97)),
-    rgba(8,13,42,.96);
-  box-shadow: 0 30px 90px rgba(0,0,0,.72), inset 0 0 0 1px rgba(255,255,255,.1);
+  background: linear-gradient(180deg, #241708, #180e05);
+  box-shadow: 0 30px 90px rgba(0,0,0,.72), inset 0 0 0 1px rgba(238,195,106,.12);
 }
 
 .onboarding-progress {
@@ -237,28 +289,32 @@ button { cursor: pointer; }
 .onboarding-progress span {
   height: 5px;
   border-radius: 999px;
-  background: rgba(255,255,255,.14);
+  background: rgba(238,195,106,.16);
 }
 
 .onboarding-progress span.active {
-  background: linear-gradient(90deg, var(--blue), var(--sky), var(--gold));
-  box-shadow: 0 0 12px rgba(49,186,255,.5);
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(238,195,106,.45);
 }
 
-.onboarding-screen h2 { font-size: 34px; margin-bottom: 10px; }
-.onboarding-screen p { color: #e8def6; line-height: 1.42; }
-.onboarding-name-field { display: grid; gap: 6px; margin: 12px 0; color: var(--muted); text-align: left; }
+.onboarding-screen h2 {
+  font-family: var(--font-display);
+  color: var(--wood-ink-bright);
+  font-size: 30px;
+  margin-bottom: 10px;
+  text-shadow: none;
+}
+.onboarding-screen p { color: var(--wood-ink-2); line-height: 1.5; }
+/* Explicit single column: the global `label` rule sets a 1fr/100px/24px
+   grid for the profile form's "Weight [input] lb" pattern, which would
+   otherwise squeeze this field into the 100px slot. */
+.onboarding-name-field { display: grid; grid-template-columns: 1fr; gap: 6px; margin: 12px 0; color: var(--wood-ink); text-align: left; }
 .onboarding-name-field input { width: 100%; }
 .onboarding-actions {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
   gap: 10px;
   margin-top: 14px;
-}
-
-.secondary-button {
-  background: rgba(255,255,255,.06);
-  color: var(--ink);
 }
 
 .choice-grid, .class-choice-grid, .relic-grid, .readiness-grid {
@@ -368,15 +424,15 @@ button { cursor: pointer; }
 .class-cycle {
   width: 54px;
   height: 42px;
-  border: 1px solid rgba(247,200,95,.64);
+  border: 1px solid var(--gold);
   border-radius: 8px;
-  color: var(--gold-2);
-  background: linear-gradient(180deg, #1456cf, #092f84);
+  color: var(--gold-deep);
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   line-height: 1;
-  box-shadow: 0 0 14px rgba(49,186,255,.24);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
 }
 
 .compact-mix { gap: 6px; }
@@ -438,15 +494,18 @@ button { cursor: pointer; }
   font-size: 12px;
 }
 
+/* Explainer callout inside the onboarding form — BOARD register, so it
+   reads as part of the card rather than a vellum panel dropped into it. */
 .quest-preview {
-  border: 1px solid rgba(247,200,95,.58);
-  border-radius: 8px;
+  border: 1px solid rgba(238,195,106,.34);
+  border-radius: 10px;
   padding: 12px;
   margin-top: 12px;
-  background: radial-gradient(circle at 20% 0%, rgba(49,186,255,.18), transparent 34%), rgba(8,13,42,.88);
+  background: rgba(238,195,106,.07);
 }
 
-.quest-preview ul { margin-bottom: 0; padding-left: 20px; color: #efe7ff; }
+.quest-preview strong { color: var(--gold); }
+.quest-preview ul { margin-bottom: 0; padding-left: 20px; color: var(--wood-ink-2); }
 
 .app-shell {
   width: min(100%, 440px);
@@ -723,7 +782,7 @@ h4 { margin-bottom: 8px; }
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--blue), var(--sky), var(--gold));
+  background: linear-gradient(90deg, var(--river), var(--gold));
   box-shadow: 0 0 12px rgba(49,186,255,.58);
 }
 .score-strip article { flex: 1; padding: 12px; }
@@ -803,17 +862,37 @@ h4 { margin-bottom: 8px; }
   font-size: 12px;
   font-weight: 800;
 }
+/* Primary action — the gold "lit" fill, shared by both registers.
+   Replaces the legacy blue gradient (the last saturated blue in the app). */
 .text-button, .primary-button {
-  border: 1px solid rgba(247,200,95,.72);
+  border: 1px solid var(--gold);
   border-radius: 8px;
   min-height: 38px;
   padding: 0 13px;
-  background: linear-gradient(180deg, #1456cf, #092f84);
-  color: var(--gold-2);
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
+  color: var(--gold-deep);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .04em;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 0 18px rgba(49,186,255,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+}
+.text-button:hover, .primary-button:hover,
+.text-button:focus-visible, .primary-button:focus-visible {
+  background: var(--gold-light);
+}
+
+/* Secondary — same shape, gold hairline on an unfilled surface.
+   Must come after the primary rule: both are single-class selectors,
+   so source order decides. (It previously sat earlier in the file and
+   was silently overridden, making every secondary button render blue.) */
+.secondary-button {
+  background: rgba(255,255,255,.05);
+  border-color: rgba(238,195,106,.55);
+  color: var(--gold-2);
+  box-shadow: none;
+}
+.secondary-button:hover, .secondary-button:focus-visible {
+  background: rgba(238,195,106,.12);
 }
 
 .exercise-list { display: grid; gap: 10px; }
@@ -1359,15 +1438,23 @@ dialog::backdrop { background: rgba(0,0,0,.62); }
 .profile-form { display: grid; gap: 12px; }
 label { display: grid; grid-template-columns: 1fr 100px 24px; align-items: center; gap: 8px; color: var(--muted); }
 label:has(select) { grid-template-columns: 1fr 1.65fr; }
+/* Register-agnostic: a translucent well rather than a fixed navy, so the
+   same field reads correctly on wood and on vellum. */
 input, select {
   width: 100%;
   min-height: 38px;
-  border: 1px solid rgba(247,200,95,.35);
+  border: 1px solid rgba(238,195,106,.35);
   border-radius: 8px;
   padding: 0 9px;
-  background: #080d2a;
+  background: rgba(0,0,0,.35);
   color: var(--ink);
 }
+input:focus-visible, select:focus-visible {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(238,195,106,.22);
+}
+input::placeholder { color: rgba(201,180,138,.65); }
 .device-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .device { min-height: 50px; border: 1px solid rgba(49,186,255,.42); border-radius: 8px; background: rgba(49,186,255,.11); color: var(--ink); font-size: 12px; }
 .primary-button { min-height: 44px; background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #10201b; }
@@ -1567,7 +1654,26 @@ input, select {
   cursor: pointer;
   text-decoration: none;
 }
-.tabbar-item img { width: 30px; height: 30px; object-fit: contain; opacity: .5; transition: opacity .2s ease; }
-.tabbar-item.active img { opacity: 1; }
-.tabbar-item.active { background: rgba(232,189,99,.10); }
-.tabbar-item:focus-visible { outline: 2px solid var(--qb-gold); outline-offset: 2px; }
+/* All icons stay full brightness — the active item is marked by the
+   gold rule beneath it, not by dimming its siblings. */
+.tabbar-item { position: relative; }
+.tabbar-item img { width: 30px; height: 30px; object-fit: contain; }
+.tabbar-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gold);
+  transform: translateX(-50%) scaleX(0);
+  opacity: 0;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.tabbar-item.active::after { transform: translateX(-50%) scaleX(1); opacity: 1; }
+.tabbar-item:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tabbar-item::after { transition: none; }
+}

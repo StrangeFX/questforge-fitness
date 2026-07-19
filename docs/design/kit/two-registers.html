@@ -1,0 +1,209 @@
+<!-- @dsCard group="Foundations" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuestForge — Two Registers</title>
+<style>
+@font-face { font-family:'Cinzel'; font-weight:600 800; font-display:swap;
+  src:url('../../../assets/fonts/cinzel-latin.woff2') format('woff2'); }
+@font-face { font-family:'Work Sans'; font-weight:400 700; font-display:swap;
+  src:url('../../../assets/fonts/worksans-latin.woff2') format('woff2'); }
+
+:root{
+  /* ---- SHARED SPINE (identical in both registers) ---- */
+  --gold:        #eec36a;   /* proposed merge of --gold #f7c85f + --qb-gold #e8bd63 */
+  --gold-light:  #f4d78a;
+  --gold-deep:   #241505;   /* text on gold fills */
+  --font-display:"Cinzel", Georgia, serif;
+  --font-body:   "Work Sans", system-ui, sans-serif;
+  --data-font:   "Courier New", ui-monospace, monospace;
+  --radius:      14px;
+
+  /* ---- REGISTER A — BOARD (waking world, wood) ---- */
+  --wood-base:#120b06; --wood-frame:#2a1c0f; --wood-line:#4a3418;
+  --wood-ink-bright:#fbeecb; --wood-ink:#f4e2b8; --wood-ink-2:#c9b48a;
+  --wood-muted:#a68f66;
+
+  /* ---- REGISTER B — VELLUM (the journey, violet/navy) ---- */
+  /* warmed from the originals so violet sits on brown without clashing */
+  --vellum-top:    rgba(46,30,78,.95);   /* was rgba(33,22,75,.92) */
+  --vellum-bottom: rgba(18,16,44,.96);   /* was rgba(8,13,42,.94)  */
+  --vellum-ink:    #fff6df;
+  --vellum-muted:  #cbbce6;
+  --vellum-surface: linear-gradient(180deg, var(--vellum-top), var(--vellum-bottom));
+
+  /* semantic accents live in BOTH registers, unchanged */
+  --shrine:#a84dff; --river:#31baff; --ember:#ff7a45; --sanctuary:#6be5ab;
+  --stone:#9086a3;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; padding:28px 18px 60px;
+  font-family:var(--font-body);
+  color:var(--wood-ink);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232,189,99,.10) 0, transparent 42%),
+    linear-gradient(180deg,#160d05,#0c0703 70%),
+    var(--wood-base);
+}
+.wrap{max-width:940px;margin:0 auto}
+h1{font-family:var(--font-display);color:var(--gold);font-size:26px;margin:0 0 6px;letter-spacing:.02em}
+.lede{color:var(--wood-ink-2);font-size:13.5px;line-height:1.6;max-width:60ch;margin:0 0 34px}
+h2{font-family:var(--font-display);color:var(--gold);font-size:15px;letter-spacing:.08em;
+   text-transform:uppercase;margin:38px 0 4px;border-bottom:1px solid var(--wood-line);padding-bottom:7px}
+.note{color:var(--wood-muted);font-size:12px;line-height:1.6;max-width:62ch;margin:8px 0 18px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.eyebrow{font-family:var(--font-display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+   color:var(--wood-muted);margin:0 0 8px}
+
+/* ============ REGISTER A: BOARD ============ */
+.board{
+  position:relative;padding:16px;border:2px solid var(--wood-line);border-radius:var(--radius);
+  background:url('../../../assets/wood-bg.png') center/cover;overflow:hidden;
+}
+.board::before{content:"";position:absolute;inset:0;background:rgba(10,6,2,.55)}
+.board>*{position:relative;z-index:1}
+.board-title{font-family:var(--font-display);color:var(--wood-ink-bright);font-size:19px;margin:0 0 4px}
+.board-meta{color:var(--wood-ink-2);font-size:12.5px;line-height:1.5;margin:0}
+
+/* ============ REGISTER B: VELLUM ============ */
+/* Same wood frame. Different fill. That is the entire bridge. */
+.vellum{
+  padding:16px;border:2px solid var(--wood-line);border-radius:var(--radius);
+  background:var(--vellum-surface);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 0 22px rgba(168,77,255,.10);
+  color:var(--vellum-ink);
+}
+.vellum-title{font-family:var(--font-display);color:var(--gold);font-size:19px;margin:0 0 4px}
+.vellum-meta{color:var(--vellum-muted);font-size:12.5px;line-height:1.5;margin:0}
+
+/* shared components — proof they read as one family */
+.tag{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--gold);
+  color:var(--gold);font-size:11px;font-weight:700;margin:10px 8px 0 0}
+.cta{display:block;width:100%;margin-top:13px;padding:11px;border:0;border-radius:10px;
+  background:var(--gold);color:var(--gold-deep);font-family:var(--font-body);
+  font-size:12.5px;font-weight:700;cursor:pointer}
+.cta:hover{background:var(--gold-light)}
+.fig{font-family:var(--data-font);font-variant-numeric:tabular-nums;font-size:26px;color:var(--gold);line-height:1}
+.fig-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wood-muted);margin-top:3px}
+.vellum .fig-label{color:var(--vellum-muted)}
+
+/* swatches */
+.sw{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.chip{width:88px}
+.chip i{display:block;height:44px;border-radius:8px;border:1px solid rgba(255,255,255,.14)}
+.chip b{display:block;font-size:10px;font-weight:600;margin-top:5px;color:var(--wood-ink-2)}
+.chip s{display:block;font-family:var(--data-font);font-size:9.5px;color:var(--wood-muted);text-decoration:none}
+
+.gold-merge{display:flex;gap:0;margin-top:12px;border-radius:8px;overflow:hidden;max-width:420px}
+.gold-merge div{flex:1;height:56px;display:grid;place-items:end center;padding-bottom:5px;
+  font-family:var(--data-font);font-size:10px;color:#241505;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Two Registers, One Language</h1>
+  <p class="lede">Wood is the core. Violet is not removed — it is re-cast as the second of two
+  registers that share a spine. The board is the waking world: physical, warm, where you stand and
+  take a quest. The vellum is the journey: nocturnal, magical, where distance and time are drawn.
+  Both are framed in the same wood.</p>
+
+  <h2>The bridge</h2>
+  <p class="note">The frame is the shared element. Every surface in the app — both registers —
+  uses the same <b>2px&nbsp;<code>--wood-line</code> border at 14px radius</b>. Only the fill changes.
+  A violet panel stops reading as a foreign object on brown the moment it is seated in the same
+  frame as the board cards: it becomes a window cut into the board, not a sticker on top of it.</p>
+
+  <div class="cols">
+    <div>
+      <p class="eyebrow">Register A — Board</p>
+      <div class="board">
+        <p class="board-title">Today's Quest</p>
+        <p class="board-meta">Iron &amp; Ash — a Paladin's balanced trial.</p>
+        <span class="tag">+180 XP</span><span class="tag">6 activities</span>
+        <button class="cta">Begin the trial</button>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">Register B — Vellum</p>
+      <div class="vellum">
+        <p class="vellum-title">The Long Road</p>
+        <p class="vellum-meta">77% of today's travel goal — your own goal, your own pace.</p>
+        <span class="tag">4.2 mi</span><span class="tag">Chapter II</span>
+        <button class="cta">Open the map</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Where each register is used</h2>
+  <p class="note">
+    <b>Board</b> — Home, streak, Hero Status Check, quest cards, plaques, exercise cards, tab bar,
+    all nav chrome. Anything you act on <i>now</i>.<br>
+    <b>Vellum</b> — the Adventure Map / Walking Tracker, Plan's weekly quest map, Wins &amp; history,
+    milestone tracks. Anything that depicts <i>elapsed distance or time</i>.<br>
+    The rule of thumb: <b>if it charts a journey, it's vellum; if it's a thing on the board, it's wood.</b>
+  </p>
+
+  <h2>One gold, not two</h2>
+  <p class="note">The app currently defines two near-identical golds. They should collapse to a single
+  token. Proposed value is the midpoint — warm enough for wood, bright enough to stay legible on violet.</p>
+  <div class="gold-merge">
+    <div style="background:#f7c85f">--gold #f7c85f</div>
+    <div style="background:#eec36a">MERGED #eec36a</div>
+    <div style="background:#e8bd63">--qb-gold #e8bd63</div>
+  </div>
+
+  <h2>Warming the violet</h2>
+  <p class="note">The original panel violet was mixed against a near-black indigo ground. On brown it
+  reads cold and slightly blue. Nudging it warmer and lighter keeps its identity while letting it sit
+  beside wood. Left = original, right = proposed.</p>
+  <div class="cols" style="grid-template-columns:1fr 1fr;max-width:560px">
+    <div style="padding:16px;border:2px solid var(--wood-line);border-radius:14px;
+      background:linear-gradient(180deg,rgba(33,22,75,.92),rgba(8,13,42,.94));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)">
+      <div class="fig" style="color:#fff0a4">12,480</div>
+      <div class="fig-label" style="color:#c9b8e9">Original violet</div>
+    </div>
+    <div class="vellum">
+      <div class="fig">12,480</div>
+      <div class="fig-label">Proposed vellum</div>
+    </div>
+  </div>
+
+  <h2>Shared spine — identical in both registers</h2>
+  <p class="note">These never change between registers. They are what make the two read as one app:
+  Cinzel display, Work Sans body, Courier ledger figures, the single gold, 14px radius, the 2px wood
+  frame, and all four semantic accents.</p>
+  <div class="sw">
+    <div class="chip"><i style="background:#eec36a"></i><b>gold</b><s>#eec36a</s></div>
+    <div class="chip"><i style="background:#a84dff"></i><b>shrine</b><s>#a84dff</s></div>
+    <div class="chip"><i style="background:#31baff"></i><b>river</b><s>#31baff</s></div>
+    <div class="chip"><i style="background:#ff7a45"></i><b>ember</b><s>#ff7a45</s></div>
+    <div class="chip"><i style="background:#6be5ab"></i><b>sanctuary</b><s>#6be5ab</s></div>
+    <div class="chip"><i style="background:#9086a3"></i><b>stone</b><s>#9086a3</s></div>
+  </div>
+
+  <h2>Figures read the same on both</h2>
+  <p class="note">The Courier ledger figure over a small uppercase label is unchanged from the
+  documented system. It is the clearest carry-through — a stat strip can cross registers without
+  redrawing.</p>
+  <div class="cols">
+    <div class="board" style="display:flex;gap:26px">
+      <div><div class="fig">1,240</div><div class="fig-label">Season XP</div></div>
+      <div><div class="fig">5</div><div class="fig-label">Streak</div></div>
+      <div><div class="fig">12</div><div class="fig-label">Relics</div></div>
+    </div>
+    <div class="vellum" style="display:flex;gap:26px">
+      <div><div class="fig">4.2</div><div class="fig-label">Miles today</div></div>
+      <div><div class="fig">77</div><div class="fig-label">% of goal</div></div>
+      <div><div class="fig">II</div><div class="fig-label">Chapter</div></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
